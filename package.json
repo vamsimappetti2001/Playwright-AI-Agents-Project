@@ -1,0 +1,11 @@
+{
+  "name": "playwright-ai-demo-1",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.1"
+  }
+}
