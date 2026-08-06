@@ -1,19 +1,42 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: '.',
+  testDir: './tests',
+  globalTimeout: 60 * 60 * 1000,
+  timeout: 2 * 60 * 1000,
+  expect: {
+    timeout: 10000,
+  },
   fullyParallel: true,
-  retries: 0,
-  reporter: 'list',
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: 1,
+  reporter: [
+    ['html', { outputFolder: 'playwright-report', open: 'never' }],
+    ['list'],
+  ],
   use: {
-    headless: true,
-    trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
+    trace: 'on',
+    headless: false,
+    slowMo: 1000,
+    launchOptions: {
+      slowMo: 1000,
+    },
+    screenshot: {
+      mode: 'on',
+      fullPage: true,
+    },
+    video: 'on',
+    testIdAttribute: 'data-tab-item',
   },
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'chrome',
+      use: {
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
+        headless: false,
+      },
     },
   ],
 });
